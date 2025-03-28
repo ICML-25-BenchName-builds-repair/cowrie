@@ -21,7 +21,7 @@ class Output(cowrie.core.output.Output):
 
     def generate_random_log_id(self):
         charset = string.ascii_letters + string.digits
-        random_log_id = ''.join(secrets.choice(charset) for _ in range(32))
+        random_log_id = "".join(secrets.choice(charset) for _ in range(32))
         return f"cowrielog-{random_log_id}"
 
 
@@ -50,12 +50,13 @@ class Output(cowrie.core.output.Output):
                             type="cowrie")]),
                 timestamp_opc_agent_processing=current_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ"))
         except oci.exceptions.ServiceError as ex:
-            print(
-                f"Oracle Cloud plugin Error: {ex.message}\n" +
-                f"Oracle Cloud plugin Status Code: {ex.status}\n"
+            logging.error(
+                "Oracle Cloud plugin Error: %s\nOracle Cloud plugin Status Code: %s",
+                ex.message,
+                ex.status,
             )
         except Exception as ex:
-            print(f"Oracle Cloud plugin Error: {ex}")
+            logging.error("Oracle Cloud plugin Error: %s", ex)
             raise
             
 
