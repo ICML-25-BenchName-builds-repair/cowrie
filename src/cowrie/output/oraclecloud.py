@@ -13,6 +13,9 @@ import cowrie.core.output
 from cowrie.core.config import CowrieConfig
 
 
+import logging
+
+logger = logging.getLogger(__name__)
 class Output(cowrie.core.output.Output):
     """
     Oracle Cloud output
@@ -51,11 +54,16 @@ class Output(cowrie.core.output.Output):
                 timestamp_opc_agent_processing=current_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ"))
         except oci.exceptions.ServiceError as ex:
             print(
-                f"Oracle Cloud plugin Error: {ex.message}\n" +
+                f"Oracle Cloud plugin Error: {ex.message}\n"
                 f"Oracle Cloud plugin Status Code: {ex.status}\n"
             )
+            logger.warning(
+                "Oracle Cloud plugin Error: %s | Status Code: %s",
+                ex.message,
+                ex.status,
+            )
         except Exception as ex:
-            print(f"Oracle Cloud plugin Error: {ex}")
+            logger.error("Oracle Cloud plugin Error: %s", ex)
             raise
             
 
